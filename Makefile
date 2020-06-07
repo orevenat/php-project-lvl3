@@ -2,12 +2,26 @@ start:
 	php artisan serve --host 0.0.0.0
 
 setup:
+	install
+	env-prepare
+	key
+	db-prepare
+
+install:
 	composer install
-	cp -n .env.example .env || true
-	php artisan key:gen --ansi
-	php artisan migrate
-	php artisan db:seed
 	npm install
+
+db-prepare:
+	php artisan migrate --seed
+
+env-prepare:
+	cp -n .env.example .env || true
+
+sqlite-prepare:
+	touch database/database.sqlite
+
+key:
+	php artisan key:gen --ansi
 
 watch:
 	npm run watch
@@ -25,7 +39,7 @@ test:
 	php artisan test
 
 deploy:
-	git push heroku
+	git push heroku master
 
 lint:
 	composer phpcs
