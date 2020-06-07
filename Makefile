@@ -1,11 +1,7 @@
 start:
 	php artisan serve --host 0.0.0.0
 
-setup:
-	install
-	env-prepare
-	key
-	db-prepare
+setup: env-prepare sqlite-prepare install key db-prepare
 
 install:
 	composer install
