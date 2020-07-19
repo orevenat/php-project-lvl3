@@ -14,4 +14,10 @@ j--------------------------------------------------------------------------
 */
 
 Route::get('/', 'HomeController@show')->name('home');
-Route::resource('/domains', 'DomainController');
+Route::resource('domains', 'DomainController')->only([
+    'index', 'show', 'store'
+]);
+
+Route::resource('domains.checks', 'DomainCheckController')->only([
+    'store'
+]);

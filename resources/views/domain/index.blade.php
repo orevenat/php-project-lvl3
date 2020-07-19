@@ -15,7 +15,7 @@
                 <tr>
                     <td>{{ $domain->id }}</td>
                     <td><a href="{{ route('domains.show', $domain->id) }}">{{ $domain->name }}</a></td>
-                    <td>2020-02-27 20:18:11 </td>
+                    <td>{{ $domain->last_check }}</td>
                     <td>200</td>
                 </tr>
             @endforeach

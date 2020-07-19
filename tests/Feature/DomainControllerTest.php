@@ -15,6 +15,10 @@ class DomainControllerTest extends TestCase
         $this->id = DB::table('domains')->insertGetId(
             ['name' => 'https://yandex.ru']
         );
+
+        DB::table('domain_checks')->insert([
+            ['domain_id' => $this->id]
+        ]);
     }
 
     public function testIndex()

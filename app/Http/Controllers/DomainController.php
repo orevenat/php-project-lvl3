@@ -16,7 +16,13 @@ class DomainController extends Controller
      */
     public function index(Request $request)
     {
-        $domains = Db::select('select id, name from domains');
+        $domains = Db::table('domains')
+            ->leftJoin('domain_checks', 'domains.id', '=', 'domain_checks.domain_id')
+            ->orderBy('domains.id')
+            ->orderByDesc('domain_checks.created_at')
+            ->distinct('domains.id')
+            ->get(['domains.id', 'domains.name', 'domain_checks.created_at as last_check']);
+
         return view('domain.index', compact('domains'));
     }
 
@@ -66,6 +72,10 @@ class DomainController extends Controller
     public function show($id)
     {
         $domain = DB::table('domains')->find($id);
-        return view('domain.show', compact('domain'));
+        $domain_checks = DB::table('domain_checks')
+                            ->where('domain_id', $domain->id)
+                            ->get();
+
+        return view('domain.show', compact('domain', 'domain_checks'));
     }
 }

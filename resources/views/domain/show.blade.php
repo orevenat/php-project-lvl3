@@ -23,5 +23,22 @@
             </tr>
         </table>
     </div>
+    <h2 class="mt-5 mb-3">Checks</h2>
+    <form class="mb-3" method="post" action="{{ route('domains.checks.store', $domain->id) }}">
+        @csrf
+        <input type="submit" class="btn btn-primary" value="Run check">
+    </form>
+    <table class="table table-bordered table-hover text-nowrap">
+        <tr>
+            <th>Id</th>
+            <th>Created At</th>
+        </tr>
+        @foreach ($domain_checks as $domain_check)
+            <tr>
+                <td>{{ $domain_check->id }}</td>
+                <td>{{ $domain_check->created_at }}</td>
+            </tr>
+        @endforeach
+    </table>
 </div>
 @endsection
