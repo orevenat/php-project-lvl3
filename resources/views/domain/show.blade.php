@@ -32,12 +32,18 @@
         <tr>
             <th>Id</th>
             <th>Status Code</th>
+            <th>H1</th>
+            <th>Description</th>
+            <th>Keywords</th>
             <th>Created At</th>
         </tr>
         @foreach ($domain_checks as $domain_check)
             <tr>
                 <td>{{ $domain_check->id }}</td>
                 <td>{{ $domain_check->status_code }}</td>
+                <td>{{ $domain_check->h1 }}</td>
+                <td>{{ $domain_check->description }}</td>
+                <td>{{ $domain_check->keywords }}</td>
                 <td>{{ $domain_check->created_at }}</td>
             </tr>
         @endforeach

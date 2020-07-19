@@ -20,7 +20,8 @@ class DomainCheckControllerTest extends TestCase
 
     public function testStore()
     {
-        Http::fake();
+        $body = file_get_contents(__DIR__ . '/../fixtures/yandex.html');
+        Http::fake(fn() => Http::response($body, 200));
         $response = $this->post(route('domains.checks.store', $this->id), []);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
