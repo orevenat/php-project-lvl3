@@ -31,11 +31,13 @@
     <table class="table table-bordered table-hover text-nowrap">
         <tr>
             <th>Id</th>
+            <th>Status Code</th>
             <th>Created At</th>
         </tr>
         @foreach ($domain_checks as $domain_check)
             <tr>
                 <td>{{ $domain_check->id }}</td>
+                <td>{{ $domain_check->status_code }}</td>
                 <td>{{ $domain_check->created_at }}</td>
             </tr>
         @endforeach

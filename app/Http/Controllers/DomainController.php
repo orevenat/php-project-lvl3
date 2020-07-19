@@ -21,7 +21,7 @@ class DomainController extends Controller
             ->orderBy('domains.id')
             ->orderByDesc('domain_checks.created_at')
             ->distinct('domains.id')
-            ->get(['domains.id', 'domains.name', 'domain_checks.created_at as last_check']);
+            ->get(['domains.id', 'domains.name', 'domain_checks.created_at as last_check', 'domain_checks.status_code']);
 
         return view('domain.index', compact('domains'));
     }

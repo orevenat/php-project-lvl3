@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class DomainCheckControllerTest extends TestCase
 {
@@ -19,6 +20,7 @@ class DomainCheckControllerTest extends TestCase
 
     public function testStore()
     {
+        Http::fake();
         $response = $this->post(route('domains.checks.store', $this->id), []);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
