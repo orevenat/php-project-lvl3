@@ -30,5 +30,11 @@ jobs:
     - name: Check lint
       run: make lint
 
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      run: make test
+    - name: Test & publish code coverage
+      uses: paambaati/codeclimate-action@v2.6.0
+
+      env:
+        CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+      with:
+        coverageCommand: make test-coverage
+        coverageLocations: ${{github.workspace}}/coverage-report:clover
