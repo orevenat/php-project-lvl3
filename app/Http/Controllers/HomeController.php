@@ -11,8 +11,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function show()
+    public function show(Request $request)
     {
-        return view('home');
+        $domain = $request->old('domain', ['name' => null]);
+        return view('home', compact('domain'));
     }
 }

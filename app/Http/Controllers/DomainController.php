@@ -34,11 +34,19 @@ class DomainController extends Controller
     public function store(Request $request)
     {
         $formData = $request->input('domain');
-        $validatedData = Validator::make($formData, [
-            'name' => 'required|url'
-        ])->validate();
+        $validator = app('validator')->make($formData, [
+            'name' => 'required|url|max:255'
+        ]);
 
-        $parsedUrl = parse_url($validatedData['name']);
+        if ($validator->fails()) {
+            flash('Not a valid url')->error();
+
+            return redirect()->route('home')
+                             ->withErrors($validator)
+                             ->withInput();
+        }
+
+        $parsedUrl = parse_url($formData['name']);
         $host = "{$parsedUrl['scheme']}://{$parsedUrl['host']}";
 
         $domain = app('db')->table('domains')->where('name', $host)->first();
@@ -49,8 +57,8 @@ class DomainController extends Controller
         } else {
             $id = app('db')->table('domains')->insertGetId(
                 array_merge(
-                    $validatedData,
                     [
+                        'name' => $host,
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ]

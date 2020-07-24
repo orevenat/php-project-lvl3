@@ -10,7 +10,7 @@
                 <p class="lead">Check web pages for free</p>
                 <form action="{{ route('domains.store') }}" method="POST" class="d-flex justify-content-center">
                     @csrf
-                    <input type="text" name="domain[name]" class="form-controll from-controll-lg" placeholder="https://www.example.com">
+                    <input type="text" name="domain[name]" value="{{ $domain['name'] }}" class="form-controll from-controll-lg" placeholder="https://www.example.com">
                     <button type="submit" class="btn btn-lg btn-primary ml-3 px-5 text-uppercase">Check</button>
                 </form>
             </div>
