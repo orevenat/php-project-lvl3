@@ -47,7 +47,6 @@ class DomainController extends Controller
             $id = $domain->id;
             flash('Url already exists');
         } else {
-
             $id = app('db')->table('domains')->insertGetId(
                 array_merge(
                     $validatedData,
