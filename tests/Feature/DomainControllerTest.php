@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 
 class DomainControllerTest extends TestCase
 {
@@ -12,11 +11,11 @@ class DomainControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->id = DB::table('domains')->insertGetId(
+        $this->id = app('db')->table('domains')->insertGetId(
             ['name' => 'https://yandex.ru']
         );
 
-        DB::table('domain_checks')->insert([
+        app('db')->table('domain_checks')->insert([
             ['domain_id' => $this->id]
         ]);
     }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use DiDom\Document;
@@ -18,7 +17,7 @@ class DomainCheckController extends Controller
      */
     public function store(Request $request)
     {
-        $domain = DB::table('domains')->find($request->route('domain'));
+        $domain = app('db')->table('domains')->find($request->route('domain'));
         $currentTime = Carbon::now();
 
         $response = Http::get($domain->name);
@@ -43,7 +42,7 @@ class DomainCheckController extends Controller
         }
 
 
-        DB::table('domain_checks')->insert(
+        app('db')->table('domain_checks')->insert(
             [
                 'domain_id' => $domain->id,
                 'status_code' => $response->status(),
@@ -55,7 +54,8 @@ class DomainCheckController extends Controller
             ]
         );
 
-        return redirect()->route('domains.show', $domain->id)
-                         ->with('info', 'Website has been checked!');
+        flash('Website has been checked!');
+
+        return redirect()->route('domains.show', $domain->id);
     }
 }

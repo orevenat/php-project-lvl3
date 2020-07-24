@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class DomainController extends Controller
@@ -16,7 +15,7 @@ class DomainController extends Controller
      */
     public function index(Request $request)
     {
-        $domains = Db::table('domains')
+        $domains = app('db')->table('domains')
             ->leftJoin('domain_checks', 'domains.id', '=', 'domain_checks.domain_id')
             ->orderBy('domains.id')
             ->orderByDesc('domain_checks.created_at')
@@ -42,25 +41,27 @@ class DomainController extends Controller
         $parsedUrl = parse_url($validatedData['name']);
         $host = "{$parsedUrl['scheme']}://{$parsedUrl['host']}";
 
-        $domain = DB::table('domains')->where('name', $host)->first();
+        $domain = app('db')->table('domains')->where('name', $host)->first();
 
         if ($domain) {
-            return redirect()->route('home')
-                             ->with('error', 'Url already exists');
+            $id = $domain->id;
+            flash('Url already exists');
+        } else {
+
+            $id = app('db')->table('domains')->insertGetId(
+                array_merge(
+                    $validatedData,
+                    [
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]
+                )
+            );
+
+            flash('Successfully created!');
         }
 
-        $id = DB::table('domains')->insertGetId(
-            array_merge(
-                $validatedData,
-                [
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now()
-                ]
-            )
-        );
-
-        return redirect()->route('domains.show', $id)
-                         ->with('success', 'Successfully created!');
+        return redirect()->route('domains.show', $id);
     }
 
     /**
@@ -71,8 +72,8 @@ class DomainController extends Controller
      */
     public function show($id)
     {
-        $domain = DB::table('domains')->find($id);
-        $domain_checks = DB::table('domain_checks')
+        $domain = app('db')->table('domains')->find($id);
+        $domain_checks = app('db')->table('domain_checks')
                             ->where('domain_id', $domain->id)
                             ->get();
 

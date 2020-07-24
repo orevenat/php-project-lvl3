@@ -21,7 +21,7 @@
 </head>
     <body class="d-flex flex-column">
         @include('layouts.header')
-        @include('flash-message')
+        @include('flash::message')
         <main class="flex-grow-1">
             @yield('content')
         </main>
