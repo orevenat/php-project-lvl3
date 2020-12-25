@@ -80,9 +80,11 @@ class DomainController extends Controller
     public function show($id)
     {
         $domain = app('db')->table('domains')->find($id);
+        abort_unless($domain, 404);
         $domain_checks = app('db')->table('domain_checks')
                             ->where('domain_id', $domain->id)
                             ->get();
+
 
         return view('domain.show', compact('domain', 'domain_checks'));
     }
